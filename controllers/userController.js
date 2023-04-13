@@ -66,7 +66,30 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 });
 
+/**-----------------------------------------------
+ * @desc    Get User Profile
+ * @route   /api/users/:id
+ * @method  GET
+ * @access  private
+ ------------------------------------------------*/
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } else {
+    res.status(404).json({
+      message: 'User not found',
+    });
+  }
+});
+
 module.exports = {
   loginUser,
   registerUser,
+  getUserProfile,
 };
